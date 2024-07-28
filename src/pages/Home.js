@@ -29,6 +29,7 @@ const Home = () => {
     const fetchRecipes = async () => {
       try {
         const recipesRef = ref(database, 'recipes');
+        // Query recipes ordered by 'createdAt' in descending order
         const q = query(recipesRef, orderByChild('createdAt'));
         const snapshot = await get(q);
 
@@ -40,7 +41,8 @@ const Home = () => {
               ...childSnapshot.val(),
             });
           });
-          setRecipes(recipesList);
+          // Reverse the list to have the most recent items first
+          setRecipes(recipesList.reverse());
         } else {
           setRecipes([]);
         }
@@ -129,7 +131,7 @@ const Home = () => {
           <select
             value={searchCategory}
             onChange={(e) => setSearchCategory(e.target.value)}
-            className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 overflow-y-scroll max-h-60 "
+            className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 overflow-y-scroll max-h-60"
           >
             <option value="">All Categories</option>
             <option value="Appetizer">Appetizer</option>
@@ -149,7 +151,6 @@ const Home = () => {
             <option value="Bread">Bread</option>
             <option value="BBQ">BBQ</option>
             <option value="Sandwich">Sandwich</option>
-            {/* Add more categories as needed */}
           </select>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">

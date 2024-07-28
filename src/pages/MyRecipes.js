@@ -32,7 +32,7 @@ const MyRecipes = () => {
       if (userId) {
         try {
           const recipesRef = ref(database, 'recipes');
-          const q = query(recipesRef, orderByChild('createdAt')); // Order by createdAt
+          const q = query(recipesRef, orderByChild('createdBy'), equalTo(userId));
           const snapshot = await get(q);
 
           if (snapshot.exists()) {
@@ -50,7 +50,7 @@ const MyRecipes = () => {
             setRecipes([]);
           }
         } catch (error) {
-          console.error('Error fetching recipes:', error);
+          console.error('Error fetching recipes:', error.message);
           setError('Error fetching recipes. Please check the console for details.');
         } finally {
           setLoading(false);
